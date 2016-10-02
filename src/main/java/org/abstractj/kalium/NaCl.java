@@ -20,6 +20,7 @@ import jnr.ffi.LibraryLoader;
 import jnr.ffi.annotations.In;
 import jnr.ffi.annotations.Out;
 import jnr.ffi.byref.LongLongByReference;
+import jnr.ffi.types.size_t;
 import jnr.ffi.types.u_int64_t;
 
 public class NaCl {
@@ -66,6 +67,15 @@ public class NaCl {
     }
 
     public interface Sodium {
+
+        int crypto_pwhash_alg_argon2i13();
+        int crypto_pwhash_alg_default();
+        @size_t int crypto_pwhash_saltbytes();
+        @size_t int crypto_pwhash_strbytes();
+        @size_t int crypto_pwhash_opslimit_interactive();
+        @size_t int crypto_pwhash_memlimit_interactive();
+        
+        @size_t int crypto_box_seedbytes();
 
         /**
          * This function isn't thread safe. Be sure to call it once, and before
@@ -344,6 +354,35 @@ public class NaCl {
         int crypto_pwhash_scryptsalsa208sha256_str_verify(
                 @In byte[] buffer, @In byte[] passwd,
                 @In @u_int64_t int passwdlen);
+
+        
+        
+        /**
+         * Derive a brute force resistant key from password hashing using Argon2.
+         * It is first introduced in libsodium v1.0.9.
+         * 
+         * @param key       Derived key bytes returns
+         * @param keylen    Length of the key 
+         * @param passwd    Password
+         * @param passwdlen Length of Password
+         * @param salt      Salt bytes. Length is crypto_pwhash_SALTBYTES 
+         * @param opslimit  represents a maximum amount of computations to perform. 
+         * Raising this number will make the function require more CPU cycles to compute a key
+         * @param memlimit  is the maximum amount of RAM that the function will use, in bytes.
+         * @param alg       is an identifier for the algorithm to use and should be currently 
+         * set to crypto_pwhash_ALG_DEFAULT   
+         * @author muquit@muquit.com - Oct-2-2016 first cut
+         * @return 0 on success
+         * @see <a href="https://download.libsodium.org/doc/password_hashing/the_argon2i_function.html">Ref in libsodium</a>
+         * @see <a href="https://github.com/P-H-C/phc-winner-argon2/raw/master/argon2-specs.pdf">Argon2 Details2 Details</a>
+         */
+        int crypto_pwhash(
+                @Out byte[] key, @In @u_int64_t int keylen,
+                @In byte[] passwd, @In @u_int64_t int passwdlen, 
+                @In byte[] salt,
+                @In @u_int64_t long opslimit, @In @u_int64_t long memlimit,
+                @In @u_int64_t int alg
+                );
 
         // ---------------------------------------------------------------------
         // Advanced: AES256-GCM

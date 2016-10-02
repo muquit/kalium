@@ -93,4 +93,23 @@ public class PasswordTest {
         // Must receive expected size
         assertEquals(NaCl.Sodium.CRYPTO_SECRETBOX_XSALSA20POLY1305_KEYBYTES, key.length);
     }
+    
+    @Test 
+    public void testPWHashDefaultAlgorithm()
+    {
+    	int alg = password.pwhash_algorithm();
+    	System.out.println("alg: " + alg);
+    }
+
+    @Test
+    public void testKeyDerivationArgon2()
+    {
+    	final String passPhrase = "This is a secret";
+
+    	byte[] passPhraseBytes = passPhrase.getBytes();
+        byte[] saltBytes = HEX.decode("4e2814f5653f3afd78f00c2618b035a9");
+        byte[] key = password.deriveKeyArgon2(passPhraseBytes, saltBytes); 
+        String keyHex = HEX.encode(key);
+        assertEquals(keyHex,"d51ad6399fbd79586356f4beefa10a6b4f2a8b33ba85fd9cf2277873479b912f");
+    }
 }
