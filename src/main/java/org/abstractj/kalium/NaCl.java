@@ -74,8 +74,14 @@ public class NaCl {
         @size_t int crypto_pwhash_strbytes();
         @size_t int crypto_pwhash_opslimit_interactive();
         @size_t int crypto_pwhash_memlimit_interactive();
-        
+
+        /* from crypto_box.h */
         @size_t int crypto_box_seedbytes();
+        @size_t int crypto_box_publickeybytes();
+        @size_t int crypto_box_secretkeybytes();
+        @size_t int crypto_box_noncebytes();
+        @size_t int crypto_box_macbytes();        
+        
 
         /**
          * This function isn't thread safe. Be sure to call it once, and before
@@ -119,6 +125,36 @@ public class NaCl {
                 @Out byte[] message, @In byte[] ct, @In @u_int64_t int length,
                 @In byte[] nonce, @In byte[] key);
 
+        
+        /**
+         * 
+         * @param ct
+         * @param msg
+         * @param msg_len
+         * @param nonce
+         * @param key
+         * @author muquit@muquit.com Oct-02-2016 first cut
+         * @return 0 on success
+         */
+        int crypto_secretbox_easy(
+        		@Out byte[] ct, @In byte[] msg, @In @u_int64_t int msg_len,
+        		@In byte[] nonce, @In byte[] key
+        		);
+        
+        /**
+         * 
+         * @param decrypted
+         * @param ct
+         * @param ct_len
+         * @param nonce
+         * @param key
+         * @author muquit@muquit.com Oct-02-2016 first cut
+         * @return 0 on success
+         */
+        int crypto_secretbox_open_easy(
+        		@Out byte[] decrypted, @In byte[] ct, @In @u_int64_t int ct_len,
+        		@In byte[] nonce, @In byte[] key
+        		);
         // ---------------------------------------------------------------------
         // Secret-key cryptography: Authentication
 

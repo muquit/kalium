@@ -35,6 +35,10 @@ public class SecretBox {
         this.key = key;
         checkLength(key, CRYPTO_SECRETBOX_XSALSA20POLY1305_KEYBYTES);
     }
+    
+    public SecretBox()
+    {
+    }
 
     public SecretBox(String key, Encoder encoder) {
         this(encoder.decode(key));
@@ -56,5 +60,43 @@ public class SecretBox {
         isValid(sodium().crypto_secretbox_xsalsa20poly1305_open(message, ct,
                 ct.length, nonce, key), "Decryption failed. Ciphertext failed verification");
         return removeZeros(CRYPTO_BOX_CURVE25519XSALSA20POLY1305_ZEROBYTES, message);
+    }
+    
+    /**
+     * Encrypt a message. It implements libsodium's crypto_secretbox_easy() function.
+     * @param key    crypto_secretbox_KEYBYTES of Encryption key
+     * @param nonce  crypto_secretbox_NONCEBYTES of Nonce
+     * @param message Message to encrypt
+     * @author muquit@muquitcom Oct-02-2016
+     * @return encrypted bytes
+     * @see also <a href="https://download.libsodium.org/doc/secret-key_cryptography/authenticated_encryption.html">Secret-key authenticated encryption</a>
+     */
+    public byte[] encryptSecretBoxEasy(byte[] key, byte[] nonce, byte[] message)
+    {
+    	checkLength(key,sodium().crypto_box_secretkeybytes());
+    	checkLength(nonce,sodium().crypto_box_noncebytes());
+    	byte[] ct = new byte[message.length + sodium().crypto_box_macbytes()];
+    	int rc = sodium().crypto_secretbox_easy(ct, message, message.length, nonce, key);
+    	isValid(rc,"Encription failed");
+    	return ct;
+    }
+    
+    /**
+     * Decrypt an encrypted message encrypted with encryptetSecretBoxEasy(). 
+     * It implements libsodium's crypto_secretbox_open_easy() function
+     * @param key
+     * @param ciphertext
+     * @author muquit@muquit.com  Oct-02-2016 first cut
+     * @return decrypted bytes 
+     * @see also <a href="https://download.libsodium.org/doc/secret-key_cryptography/authenticated_encryption.html">Secret-key authenticated encryption</a>
+     */
+    public byte[] decryptSecretBoxEeasy(byte[] key, byte[] nonce, byte[] ciphertext)
+    {
+    	checkLength(key,sodium().crypto_box_secretkeybytes());
+    	checkLength(nonce,sodium().crypto_box_noncebytes());
+    	byte[] decrypted = new byte[ciphertext.length - sodium().crypto_box_macbytes()];
+    	int rc = sodium().crypto_secretbox_open_easy(decrypted, ciphertext, ciphertext.length, nonce, key);
+    	isValid(rc,"Decryption failed");
+    	return decrypted;
     }
 }

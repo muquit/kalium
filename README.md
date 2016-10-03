@@ -28,6 +28,11 @@ Add as a Maven dependency at your project:
         <scope>compile</scope>
     </dependency>
 
+### Examples
+#### Generate Random bytes/nonce
+#### Derive Key from Password
+#### Secret-key authenticated encryption
+#### Public-key Authenticated encryption
 
 ### Notes
 
