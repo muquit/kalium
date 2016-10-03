@@ -63,4 +63,11 @@ public class Password {
     			
     	return key;
     }
+
+    public void printSodiumLibraryVersion()
+    {
+        int major = sodium().sodium_library_version_major();
+        int minor = sodium().sodium_library_version_minor();
+        System.out.println("libsodium version: " + major + "." + minor);
+    }
 }

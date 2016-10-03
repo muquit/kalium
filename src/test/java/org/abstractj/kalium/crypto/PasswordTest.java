@@ -112,4 +112,10 @@ public class PasswordTest {
         String keyHex = HEX.encode(key);
         assertEquals(keyHex,"d51ad6399fbd79586356f4beefa10a6b4f2a8b33ba85fd9cf2277873479b912f");
     }
+    
+    @Test
+    public void testLibsodiumVersion()
+    {
+        password.printSodiumLibraryVersion();
+    }
 }

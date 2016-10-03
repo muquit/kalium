@@ -25,6 +25,7 @@ import static org.abstractj.kalium.fixture.TestVectors.BOX_CIPHERTEXT;
 import static org.abstractj.kalium.fixture.TestVectors.BOX_MESSAGE;
 import static org.abstractj.kalium.fixture.TestVectors.BOX_NONCE;
 import static org.abstractj.kalium.fixture.TestVectors.SECRET_KEY;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -89,5 +90,31 @@ public class SecretBoxTest {
 
         box.decrypt(nonce, ciphertext);
         fail("Should raise an exception");
+    }
+    
+    @Test
+    public void testEncryptSecretboxEasy()
+    {
+        SecretBox box = new SecretBox();
+        byte[] key = HEX.decode("476d427e2bf7d0bd19b642257711ed6ee965fd0042923a20114788af1e66dbbf");
+        byte[] message = HEX.decode("753d936a4d4b668a0b345e81db9582b11d2c4008754beaad4eef28a912c42db1");
+        byte[] nonce = HEX.decode("32f2fc22dd1bfac7e91db52b630258b309a6794c50b98a56");
+        byte[] cipherText = box.encryptSecretBoxEasy(key,nonce,message);
+        String cipherTextHex = HEX.encode(cipherText);
+        String expectedCipherTextHex = "252311348e1a06085d6d44105a8391ef531b5b7f0be03f8dabcd7e7d4e0f2a3784cf7ad697c491309b1e3de85f19e58f";
+        assertEquals(cipherTextHex,expectedCipherTextHex);
+    }
+    @Test
+    public void testDecryptSecretboxEasy()
+    {
+        SecretBox box = new SecretBox();
+        byte[] key = HEX.decode("476d427e2bf7d0bd19b642257711ed6ee965fd0042923a20114788af1e66dbbf");
+        String cipherTextHex = "252311348e1a06085d6d44105a8391ef531b5b7f0be03f8dabcd7e7d4e0f2a3784cf7ad697c491309b1e3de85f19e58f";
+        String expectedPlainTextHex = "753d936a4d4b668a0b345e81db9582b11d2c4008754beaad4eef28a912c42db1";
+        byte[] cipherText = HEX.decode(cipherTextHex);
+        byte[] nonce = HEX.decode("32f2fc22dd1bfac7e91db52b630258b309a6794c50b98a56");
+        byte[] plainText = box.decryptSecretBoxEeasy(key,nonce,cipherText);
+        String plainTextHex = HEX.encode(plainText);
+        assertEquals(plainTextHex, expectedPlainTextHex);
     }
 }

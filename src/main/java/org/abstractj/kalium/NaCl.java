@@ -68,6 +68,9 @@ public class NaCl {
 
     public interface Sodium {
 
+        int sodium_library_version_major();
+        int sodium_library_version_minor();
+        
         int crypto_pwhash_alg_argon2i13();
         int crypto_pwhash_alg_default();
         @size_t int crypto_pwhash_saltbytes();
