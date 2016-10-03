@@ -82,4 +82,30 @@ public class Box {
     public byte[] decrypt(String nonce, String ciphertext, Encoder encoder) {
         return decrypt(encoder.decode(nonce), encoder.decode(ciphertext));
     }
+    
+    /**
+     * 
+     * @param nonce
+     * @param message
+     * @author muquit@muquit.com Oct-03-2016
+     * @return
+     */
+    public byte[] encryptBoxEasy(byte[] nonce, byte[] message)
+    {
+        // TODO
+        return null;
+    }
+    
+    /**
+     * 
+     * @param nonce
+     * @param cipherText
+     * @author muquit@muquit.com Oct-03-2016
+     * @return
+     */
+    public byte[] decryptBoxEasy(byte[] nonce, byte[] cipherText)
+    {
+        // TODO
+        return null;
+    }
 }

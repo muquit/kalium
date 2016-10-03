@@ -262,6 +262,38 @@ public class NaCl {
                 @Out byte[] message, @In byte[] ct, @In @u_int64_t int length,
                 @In byte[] nonce, @In byte[] shared);
 
+        
+        /**
+         * 
+         * @param ct
+         * @param msg
+         * @param msg_len
+         * @param nonce
+         * @param publicKey
+         * @param privateKey
+         * @author muquit@muquit.com Oct-03-2016 first cut
+         * @return 0 on success
+         */
+        int crypto_box_easy(
+                @Out byte[] ct, @In byte[] msg, @In @u_int64_t int msg_len,
+                @In byte[] nonce, @In byte[] publicKey, @In byte[] privateKey
+                );
+        
+        /**
+         * 
+         * @param decrypted
+         * @param ct
+         * @param ct_len
+         * @param nonce
+         * @param publicKey
+         * @param privateKey
+         * @author muquit@muquit.com Oct-03-2016 first cut
+         * @return 0 on success
+         */
+        int cryto_box_open_easy(
+                @Out byte[] decrypted, @In byte[] ct, @In @u_int64_t int ct_len,
+                @In byte[] nonce, @In byte[] publicKey, @In byte[] privateKey
+                );
         // ---------------------------------------------------------------------
         // Public-key cryptography: Public-key signatures
 
